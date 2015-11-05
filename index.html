@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Super Bowling!</title>
+    <link rel="stylesheet" type="text/css" href="_css/main.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="_js/script.js"></script>
+</head>
+
+<body ng-app="bowlApp" ng-controller="bowlController as bowlCtrl">
+    <div id="mainContent">
+        <h1>Super Bowling!</h1>
+        <table class="card">
+            <tr class="rolls">
+                <td align="center" ng-repeat="score in superBowl.aScore track by $index">{{score}}</td>
+            </tr>
+            <tr class="score">
+                <td align="center" ng-repeat="frames in superBowl.aFrames track by $index" colspan="{{$last ? superBowl.nRollsLastFrame : superBowl.nRollsPerFrame}}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="buttons">
+
+            <button type="submit" ng-repeat="button in superBowl.aPinInfo" ng-click="superBowl.rollAdd(button.nVal)" data-ng-disabled="superBowl.isDisabled(button)">{{button.sName}}</button>
+
+    </div>
+
+</body>
+
+</html>

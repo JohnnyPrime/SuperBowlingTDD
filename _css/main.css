@@ -1,0 +1,39 @@
+table,
+tr,
+td {
+    /*
+    border-width: 2px;
+    border-color: darkred;border-style: solid;
+*/
+}
+
+h1 {
+    width: 220px;
+    margin: auto;
+}
+
+table {
+    border: 5px solid black;
+    margin: auto;
+}
+
+td {
+    border: 2px solid black;
+    width: 24px;
+    height: 24px;
+}
+
+button {
+    width: 64px;
+    height: 64px;
+}
+
+#buttons {
+    width: 744px;
+    margin: auto;
+}
+
+#mainContent {
+    width: auto;
+    margin: auto;
+}
