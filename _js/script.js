@@ -1,6 +1,7 @@
-/*globals angular, console */
+/*globals angular, console, rollMany */
 
 "use strict";
+
 var app = angular.module('bowlApp', []);
 
 app.controller('bowlController', ['$scope', function ($scope) {
@@ -16,7 +17,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
         aFrames: [],
         aPinInfo: [{
             nVal: 0,
-            sName: "Zero"
+            sName: "Noooo!"
         }, {
             nVal: 1,
             sName: "One"
@@ -46,7 +47,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
             sName: "Nine"
         }, {
             nVal: 10,
-            sName: "Ten"
+            sName: "Tacos!"
         }],
         nRollsPerFrame: 2,
         nRollsLastFrame: 3,
@@ -67,13 +68,29 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
                 return false;
             }
+        },
 
+        scoreTime: function () {
+
+            if (!this.aScore[20]) {
+                return true;
+            } else {
+                return false;
+            }
+
+
+        },
+
+        calculateScore: function () {
+            console.log($scope.bowl.score());
 
         }
+
+
     };
 
+    $scope.bowl = new bowlingGame($scope.superBowl.aScore);
     $scope.superBowl.aFrames.length = nFrames;
     $scope.superBowl.aScore.length = nRolls;
-
 
 }]);

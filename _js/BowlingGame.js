@@ -1,20 +1,45 @@
-var BowlingGame = function () {
-    this.rolls = [];
+"use strict";
+
+var testHello = "what";
+
+var bowlingGame = function (something) {
+    this.rolls = something;
 };
 
-BowlingGame.prototype.roll = function (pins) {
+bowlingGame.prototype.roll = function (pins) {
     this.rolls.push(pins);
 };
 
-BowlingGame.prototype.score = function () {
-    var result = 0;
-    var rollIndex = 0;
-    var game = this;
+bowlingGame.prototype.score = function () {
+    var result = 0,
+        rollIndex = 0,
+        game = this,
+        frameIndex;
 
-    for (var frameIndex = 0; frameIndex < 10; frameIndex++) {
+    function isSpare() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] === 10;
+    }
+
+    function isStrike() {
+        return game.rolls[rollIndex] === 10;
+    }
+
+    function getNormalScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1];
+    }
+
+    function getSpareScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
+    }
+
+    function getStrikeScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
+    }
+
+    for (frameIndex = 0; frameIndex < 10; frameIndex += 1) {
         if (isStrike()) {
             result += getStrikeScore();
-            rollIndex++;
+            rollIndex += 1;
         } else if (isSpare()) {
             result += getSpareScore();
             rollIndex += 2;
@@ -26,30 +51,4 @@ BowlingGame.prototype.score = function () {
     }
 
     return result;
-
-    function isStrike() {
-        return game.rolls[rollIndex] == 10;
-
-    }
-
-    function isSpare() {
-        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] == 10;
-
-    }
-
-    function getStrikeScore() {
-        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
-    }
-
-    function getSpareScore() {
-        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
-    }
-
-    function getNormalScore() {
-        return game.rolls[rollIndex] + game.rolls[rollIndex + 1];
-    }
-
-
-
-
 };

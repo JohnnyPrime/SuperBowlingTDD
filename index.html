@@ -6,6 +6,7 @@
     <title>Super Bowling!</title>
     <link rel="stylesheet" type="text/css" href="_css/main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="_js/bowlingGame.js"></script>
     <script src="_js/script.js"></script>
 </head>
 
@@ -24,9 +25,13 @@
 
     <div id="buttons">
 
-            <button type="submit" ng-repeat="button in superBowl.aPinInfo" ng-click="superBowl.rollAdd(button.nVal)" data-ng-disabled="superBowl.isDisabled(button)">{{button.sName}}</button>
+        <button type="submit" ng-repeat="button in superBowl.aPinInfo" ng-click="superBowl.rollAdd(button.nVal)" data-ng-disabled="superBowl.isDisabled(button)">{{button.sName}}</button>
+
+
 
     </div>
+
+    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>
 
 </body>
 

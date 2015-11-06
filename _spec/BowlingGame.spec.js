@@ -1,12 +1,13 @@
-/*globals require, describe, it, expect, BowlingGame*/
+/*globals require, describe, it, expect, bowlingGame*/
 
 describe('The Bowling Game', function () {
 
     var game;
 
     beforeEach(function () {
-        game = new BowlingGame();
+        game = new bowlingGame();
     });
+
 
     it('can roll gutter game', function () {
         rollMany(0, 20);
