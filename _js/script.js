@@ -1,6 +1,34 @@
-/*globals angular, console, rollMany */
+/*globals angular, console */
 
 "use strict";
+
+var app = angular.module('bowlApp', []);
+
+app.controller('bowlController', ['$scope', function ($scope) {
+
+    $scope.master = {};
+
+    $scope.update = function (user) {
+        $scope.master = angular.copy(user);
+    };
+
+    $scope.reset = function () {
+        $scope.user = angular.copy($scope.master);
+    };
+
+    $scope.reset();
+
+    $scope.theWorld = {
+        nPlayers: 0,
+        aPlayers: [],
+        createGame: function () {
+
+        }
+    };
+
+}]);
+
+/*
 
 var app = angular.module('bowlApp', []);
 
@@ -92,5 +120,4 @@ app.controller('bowlController', ['$scope', function ($scope) {
     $scope.bowl = new bowlingGame($scope.superBowl.aScore);
     $scope.superBowl.aFrames.length = nFrames;
     $scope.superBowl.aScore.length = nRolls;
-
-}]);
+*/

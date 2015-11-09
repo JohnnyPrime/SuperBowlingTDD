@@ -6,12 +6,12 @@
     <title>Super Bowling!</title>
     <link rel="stylesheet" type="text/css" href="_css/main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src="_js/bowlingGame.js"></script>
+    <!--    <script src="_js/bowlingGame.js"></script>-->
     <script src="_js/script.js"></script>
 </head>
 
 <body ng-app="bowlApp" ng-controller="bowlController as bowlCtrl">
-    <div id="mainContent">
+    <!--    <div id="mainContent">
         <h1>Super Bowling!</h1>
         <table class="card">
             <tr class="rolls">
@@ -31,7 +31,25 @@
 
     </div>
 
-    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>
+    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
+    <b>Number of Players</b>:
+            <input type="number" ng-model="theWorld.nPlayers" />
+
+        <form novalidate class="simple-form">
+            Name:
+            <input type="text" ng-model="user.name" />
+            <br /> Ball Color:
+            <input type="color" ng-model="user.color" />
+            <br /> Gender:
+            <input type="radio" ng-model="user.gender" value="male" />male
+            <input type="radio" ng-model="user.gender" value="female" />female
+            <br />
+            <input type="button" ng-click="reset()" value="Reset" />
+            <input type="submit" ng-click="update(user)" value="Save" />
+        </form>
+        <pre>user = {{user | json}}</pre>
+        <pre>master = {{master | json}}</pre>
+
 
 </body>
 

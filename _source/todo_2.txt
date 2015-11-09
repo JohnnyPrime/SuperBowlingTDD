@@ -1,0 +1,66 @@
+choose number of players
+name players
+randomize player order
+save roll into array
+function to turn array into player object
+function to calculate frame
+function to calculate score
+
+model
+to represent the current state of your application
+
+view 
+to disply the data
+
+controller
+that controls the relation between models and views
+
+TDD:
+
+create world - tells palyers what to do
+create player - tells ball what to do
+create ball - tells lane what to do
+create lane - tells scorecard what to do
+create scorecard - tells website what to do
+
+world = {
+
+nPlayers: user input
+startAt = player 0
+
+createGame = function(){
+for each player create
+    player object
+        name
+        ball color
+        blank scorecard
+    shuffle player order
+    start game
+}
+
+gameGo = function(){
+
+choose next player = function
+
+function turn (roll until scorecard says stop)
+    alert player it's their turn = function
+    ask for command = function
+    update state of the lane = function
+    calculate score = function
+    advance roll = function
+    repeat
+    end frame/turn = alert player
+if not the end of game
+repeat
+
+    }
+
+players: [{id:1}, {id:2}]
+
+function(turns){
+    set players x to active player
+}
+
+
+
+}
