@@ -6,14 +6,23 @@ var app = angular.module('bowlApp', []);
 
 app.controller('bowlController', ['$scope', function ($scope) {
 
+    var oReset = {};
+    var aReset = [];
+
     $scope.master = {};
 
     $scope.update = function (user) {
         $scope.master = angular.copy(user);
     };
 
+    $scope.userPush = function (user) {
+        $scope.theWorld.aPlayers.push(user);
+        $scope.reset();
+    };
+
     $scope.reset = function () {
-        $scope.user = angular.copy($scope.master);
+        $scope.user = angular.copy(oReset);
+
     };
 
     $scope.reset();
@@ -25,6 +34,8 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
         }
     };
+
+
 
 }]);
 
