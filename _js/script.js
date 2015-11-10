@@ -54,7 +54,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
     createWorld();
 
     $scope.displayValue = function (value) {
-        if (value > -1) {
+        if (value > -1 || value === "X" || value === "/") {
             return true;
         } else {
             return false;
@@ -65,6 +65,11 @@ app.controller('bowlController', ['$scope', function ($scope) {
         for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
             if ($scope.theWorld.aPlayers[0].rollcard[i] < 0) {
                 $scope.theWorld.aPlayers[0].rollcard[i] = value;
+                if ($scope.theWorld.aPlayers[0].rollcard[i] < 10) {
+                    $scope.theWorld.aPlayers[0].scorecard[i] = $scope.theWorld.aPlayers[0].rollcard[i];
+                } else {
+                    $scope.theWorld.aPlayers[0].scorecard[i] = "X";
+                }
                 break;
             }
         }
@@ -75,6 +80,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
         $scope.reset();
         for (var i = 0; i < $scope.theWorld.nPlayers(); i++) {
             $scope.theWorld.aPlayers[i].rollcard = blankArray(nRolls);
+            $scope.theWorld.aPlayers[i].scorecard = blankArray(nRolls);
             $scope.theWorld.aPlayers[i].frames = blankArray(nFrames);
             $scope.theWorld.aPlayers[i].inputOrder = i + 1;
         }
