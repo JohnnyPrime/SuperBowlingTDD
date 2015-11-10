@@ -31,7 +31,7 @@
     </form>
     <form ng-hide="hideForm">
         <br/><b>Number of Players: {{theWorld.aPlayers.length}}</b>
-        <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective + " " + player.color}} ball!</pre>
+        <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective}} {{player.color}} ball!</pre>
         <!--        <pre>theWorld = {{theWorld | json}}</pre>-->
         <br/>
     </form>
@@ -39,22 +39,29 @@
     <div ng-hide="!hideForm" id="mainContent">
         <h1>Super Bowling!</h1>
         <table ng-repeat="player in theWorld.aPlayers track by $index" class="card">
-            <tr class="rolls">
 
-                <td align=" center" ng-repeat="score in player.scorecard track by $index">{{isDone() ? score :""}}</td>
+            <tr class="rolls">
+                <tr>
+                    <th align="left" colspan="{{player.scorecard.length}}">
+                        {{player.name}} (with a {{player.adjective}} {{player.color}} ball)
+                    </th>
+                </tr>
+                <td align="center" ng-repeat="score in player.scorecard track by $index">{{isDone(score) ? score :""}}</td>
             </tr>
             <tr class="score">
                 <td align="center" ng-repeat="frame in player.frames track by $index" colspan="{{$last ? theWorld.nRollsLastFrame : theWorld.nRollsPerFrame}}">{{isDone() ? frame :""}}</td>
             </tr>
+            <tr></tr>
         </table>
     </div>
 
     <div ng-hide="!hideForm" id="buttons">
+        <br/>
+        <button type="submit" ng-repeat="button in theWorld.aPinInfo" ng-click="pushScore(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
 
-        <button type="submit" ng-repeat="button in theWorld.aPinInfo" ng-click="theWorld.rollAdd(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
     </div>
 
-    <!--    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
+    <!--    <button type="submit"ng-click="superBowl.calculateScore()"data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
 
 </body>
 

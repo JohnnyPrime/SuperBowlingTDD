@@ -60,6 +60,15 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
     $scope.hideForm = false;
 
+    var advanceTurn = function () {
+
+    };
+
+    var shuffle = function (o) {
+        for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    };
+
     var nFrames = 10;
     var nRolls = 21;
 
@@ -88,9 +97,18 @@ app.controller('bowlController', ['$scope', function ($scope) {
         }
     };
 
-    var displayPlayers = function () {
+    $scope.pushScore = function (value) {
 
-        return $scope.theWorld.aPlayers;
+        for (var i = 0; i < $scope.theWorld.aPlayers[0].scorecard.length; i++) {
+
+            if ($scope.theWorld.aPlayers[0].scorecard[i] < 0) {
+                $scope.theWorld.aPlayers[0].scorecard[i] = value;
+                break;
+            }
+
+
+
+        }
 
     };
 
@@ -154,6 +172,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
             $scope.theWorld.aPlayers[i].scorecard = blankRollsArray();
             $scope.theWorld.aPlayers[i].frames = blankFramesArray();
+            $scope.theWorld.aPlayers[i].inputOrder = i + 1;
 
         }
     };
@@ -178,7 +197,10 @@ app.controller('bowlController', ['$scope', function ($scope) {
     };
 
     $scope.startGame = function () {
+        shuffle($scope.theWorld.aPlayers);
         for (var i = 0; i < $scope.theWorld.aPlayers.length; i++) {
+            $scope.theWorld.aPlayers[i].playOrder = i + 1;
+
             $scope.hideForm = true;
         }
     };
