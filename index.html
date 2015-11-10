@@ -6,51 +6,53 @@
     <title>Super Bowling!</title>
     <link rel="stylesheet" type="text/css" href="_css/main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <!--    <script src="_js/bowlingGame.js"></script>-->
     <script src="_js/script.js"></script>
 </head>
 
 <body ng-app="bowlApp" ng-controller="bowlController as bowlCtrl">
-    <!--    <div id="mainContent">
-        <h1>Super Bowling!</h1>
-        <table class="card">
-            <tr class="rolls">
-                <td align="center" ng-repeat="score in superBowl.aScore track by $index">{{score}}</td>
-            </tr>
-            <tr class="score">
-                <td align="center" ng-repeat="frames in superBowl.aFrames track by $index" colspan="{{$last ? superBowl.nRollsLastFrame : superBowl.nRollsPerFrame}}"></td>
-            </tr>
-        </table>
-    </div>
-
-    <div id="buttons">
-
-        <button type="submit" ng-repeat="button in superBowl.aPinInfo" ng-click="superBowl.rollAdd(button.nVal)" data-ng-disabled="superBowl.isDisabled(button)">{{button.sName}}</button>
 
 
-
-    </div>
-
-    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
-    <form validate name="myForm" class="css-form">
+    <form ng-hide="hideForm" validate class="css-form">
         Name:
         <input type="text" ng-model="user.name" required />
         <br/> Ball Color:
-        <input type="color" ng-model="user.color" required value="#ffffff" />
+        <input type="text" ng-model="user.color" required value="#ffffff" />
         <br />
         <br/>
 
         <input type="submit" ng-disabled="myForm.$invalid" ng-click="userPush(user)" value="Add Player" />
         <br/>
 
-        <br/><b>Number of Players: {{theWorld.aPlayers.length}}</b>
-        <pre>user = {{user | json}}</pre>
-        <pre>master = {{theWorld.aPlayers | json}}</pre>
-        <br/>
+
         <input type="button" width="100px" ng-click="deleteAll()" value="Delete All" />
-        <input type="button" width="100px" ng-click="startGame()" value="Start Game!" />
+        <input type="button" width="100px" ng-disabled="canStart()" ng-click="startGame()" value="Start Game!" />
+    </form>
+    <form ng-hide="hideForm">
+        <br/><b>Number of Players: {{theWorld.aPlayers.length}}</b>
+        <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.color}} ball!</pre>
+        <!--        <pre>theWorld = {{theWorld | json}}</pre>-->
+        <br/>
     </form>
 
+    <div ng-hide="!hideForm" id="mainContent">
+        <h1>Super Bowling!</h1>
+        <table ng-repeat="player in theWorld.aPlayers track by $index" class="card">
+            <tr class="rolls">
+
+                <td align=" center" ng-repeat="score in player.scorecard track by $index">{{isDone() ? score :""}}</td>
+            </tr>
+            <tr class="score">
+                <td align="center" ng-repeat="frame in player.frames track by $index" colspan="{{$last ? theWorld.nRollsLastFrame : theWorld.nRollsPerFrame}}">{{isDone() ? frame :""}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-hide="!hideForm" id="buttons">
+
+        <button type="submit" ng-repeat="button in theWorld.aPinInfo" ng-click="theWorld.rollAdd(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
+    </div>
+
+    <!--    <button type="submit" ng-click="superBowl.calculateScore()" data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
 
 </body>
 

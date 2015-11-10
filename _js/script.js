@@ -2,133 +2,188 @@
 
 "use strict";
 
+var bowlingGame = function () {
+    this.rolls = [];
+};
+
+bowlingGame.prototype.roll = function (pins) {
+    this.rolls.push(pins);
+
+};
+
+bowlingGame.prototype.score = function () {
+    var result = 0,
+        rollIndex = 0,
+        game = this,
+        frameIndex;
+
+    function isSpare() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] === 10;
+    }
+
+    function isStrike() {
+        return game.rolls[rollIndex] === 10;
+    }
+
+    function getNormalScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1];
+    }
+
+    function getSpareScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
+    }
+
+    function getStrikeScore() {
+        return game.rolls[rollIndex] + game.rolls[rollIndex + 1] + game.rolls[rollIndex + 2];
+    }
+
+    for (frameIndex = 0; frameIndex < 10; frameIndex += 1) {
+        if (isStrike()) {
+            result += getStrikeScore();
+            rollIndex += 1;
+        } else if (isSpare()) {
+            result += getSpareScore();
+            rollIndex += 2;
+        } else {
+            result += getNormalScore();
+            rollIndex += 2;
+        }
+
+    }
+
+    return result;
+};
+
 var app = angular.module('bowlApp', []);
 
 app.controller('bowlController', ['$scope', function ($scope) {
 
-    var oReset = {};
-    var aReset = [];
+    $scope.hideForm = false;
+
+    var nFrames = 10;
+    var nRolls = 21;
+
+
+    var blankRollsArray = function () {
+        var aRolls = [];
+        for (var i = 0; i < nRolls; i++) {
+            aRolls.push(-1);
+        };
+        return aRolls;
+    };
+
+    var blankFramesArray = function () {
+        var aFrames = [];
+        for (var i = 0; i < nFrames; i++) {
+            aFrames.push(-1);
+        };
+        return aFrames;
+    };
+
+    $scope.isDone = function (value) {
+        if (value > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    var displayPlayers = function () {
+
+        return $scope.theWorld.aPlayers;
+
+    };
+
+    var createWorld = function () {
+        $scope.theWorld = {
+            nPins: 10,
+            nPlayers: 0,
+            aPlayers: [],
+            nRoll: 0,
+            nUserInput: 0,
+            nRollsPerFrame: 2,
+            nRollsLastFrame: 3,
+            aPinInfo: [{
+                nVal: 0,
+                sName: "Noooo!"
+        }, {
+                nVal: 1,
+                sName: "One"
+        }, {
+                nVal: 2,
+                sName: "Two"
+        }, {
+                nVal: 3,
+                sName: "Three"
+        }, {
+                nVal: 4,
+                sName: "Four"
+        }, {
+                nVal: 5,
+                sName: "Five"
+        }, {
+                nVal: 6,
+                sName: "Six"
+        }, {
+                nVal: 7,
+                sName: "Seven"
+        }, {
+                nVal: 8,
+                sName: "Eight"
+        }, {
+                nVal: 9,
+                sName: "Nine"
+        }, {
+                nVal: 10,
+                sName: "Tacos!"
+        }]
+
+        }
+    };
+
+    createWorld();
+
 
     $scope.master = {};
-
-    $scope.update = function (user) {
-        $scope.master = angular.copy(user);
-    };
 
     $scope.userPush = function (user) {
         $scope.theWorld.aPlayers.push(user);
         $scope.reset();
+
+        for (var i = 0; i < $scope.theWorld.aPlayers.length; i++) {
+
+            $scope.theWorld.aPlayers[i].scorecard = blankRollsArray();
+            $scope.theWorld.aPlayers[i].frames = blankFramesArray();
+
+        }
     };
 
     $scope.reset = function () {
-        $scope.user = angular.copy(oReset);
+        $scope.user = {};
+    };
+
+    $scope.deleteAll = function () {
+        $scope.reset();
+        $scope.theWorld.aPlayers = [];
 
     };
 
-    $scope.reset();
+    $scope.canStart = function () {
+        if (!$scope.theWorld.aPlayers.length) {
+            return true;
+        } else {
+            return false;
+        }
 
-    $scope.theWorld = {
-        nPlayers: 0,
-        aPlayers: [],
-        createGame: function () {
+    };
 
+    $scope.startGame = function () {
+        for (var i = 0; i < $scope.theWorld.aPlayers.length; i++) {
+            $scope.hideForm = true;
         }
     };
 
 
 
-}]);
 
-/*
-
-var app = angular.module('bowlApp', []);
-
-app.controller('bowlController', ['$scope', function ($scope) {
-
-    var nFrames = 10,
-        nPins = 10,
-        nRolls = 21;
-
-    $scope.superBowl = {
-        nRoll: 0,
-        nUserInput: 0,
-        aScore: [],
-        aFrames: [],
-        aPinInfo: [{
-            nVal: 0,
-            sName: "Noooo!"
-        }, {
-            nVal: 1,
-            sName: "One"
-        }, {
-            nVal: 2,
-            sName: "Two"
-        }, {
-            nVal: 3,
-            sName: "Three"
-        }, {
-            nVal: 4,
-            sName: "Four"
-        }, {
-            nVal: 5,
-            sName: "Five"
-        }, {
-            nVal: 6,
-            sName: "Six"
-        }, {
-            nVal: 7,
-            sName: "Seven"
-        }, {
-            nVal: 8,
-            sName: "Eight"
-        }, {
-            nVal: 9,
-            sName: "Nine"
-        }, {
-            nVal: 10,
-            sName: "Tacos!"
-        }],
-        nRollsPerFrame: 2,
-        nRollsLastFrame: 3,
-
-        rollAdd: function (val) {
-            if (!this.aScore[this.nRoll] && this.nRoll < 21) {
-                this.aScore[this.nRoll] = val;
-                this.nUserInput = val;
-                console.log("Pressed a button.");
-            }
-            this.nRoll += 1;
-        },
-
-        isDisabled: function (button) {
-            if (this.nRoll % 2 && (button.nVal + this.nUserInput) > 10) {
-                return true;
-            } else {
-
-                return false;
-            }
-        },
-
-        scoreTime: function () {
-
-            if (!this.aScore[20]) {
-                return true;
-            } else {
-                return false;
-            }
-
-
-        },
-
-        calculateScore: function () {
-            console.log($scope.bowl.score());
-
-        }
-
-
-    };
-
-    $scope.bowl = new bowlingGame($scope.superBowl.aScore);
-    $scope.superBowl.aFrames.length = nFrames;
-    $scope.superBowl.aScore.length = nRolls;
-*/
+            }]);
