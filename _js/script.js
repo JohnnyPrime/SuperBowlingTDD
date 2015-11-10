@@ -8,11 +8,11 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
     $scope.hideForm = false;
 
-    var shuffle = function (o) {
-        for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
-            return o;
-        }
-    };
+    //borrowed shuffle code, haven't followed it's logic, seems legit
+    function shuffle(o) {
+        for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    }
 
     var nRolls = 21,
         nFrames = 10,
@@ -36,52 +36,24 @@ app.controller('bowlController', ['$scope', function ($scope) {
                 aPlayers: [],
                 nRPF: nRollsPerFrame,
                 nRLF: nRollsLastFrame,
-
-                aPinInfo2: function () {
+                aButtonInfo: function () {
+                    var aTemp = [];
                     for (var i = 0; i < aButtonText.length; i++) {
+                        aTemp.push({
+                            nVal: aButtonText[i][1],
+                            sName: aButtonText[i][0]
+                        });
 
                     }
-                },
-                aPinInfo: [{
-                    nVal: 0,
-                    sName: "Noooo!"
-        }, {
-                    nVal: 1,
-                    sName: "One"
-        }, {
-                    nVal: 2,
-                    sName: "Two"
-        }, {
-                    nVal: 3,
-                    sName: "Three"
-        }, {
-                    nVal: 4,
-                    sName: "Four"
-        }, {
-                    nVal: 5,
-                    sName: "Five"
-        }, {
-                    nVal: 6,
-                    sName: "Six"
-        }, {
-                    nVal: 7,
-                    sName: "Seven"
-        }, {
-                    nVal: 8,
-                    sName: "Eight"
-        }, {
-                    nVal: 9,
-                    sName: "Nine"
-        }, {
-                    nVal: 10,
-                    sName: "Tacos!"
-        }]
+                    return aTemp;
+                }()
+
             };
         };
 
     createWorld();
 
-    $scope.isDone = function (value) {
+    $scope.displayValue = function (value) {
         if (value > -1) {
             return true;
         } else {
@@ -89,10 +61,10 @@ app.controller('bowlController', ['$scope', function ($scope) {
         }
     };
 
-    $scope.pushScore = function (value) {
-        for (var i = 0; i < $scope.theWorld.aPlayers[0].scorecard.length; i++) {
-            if ($scope.theWorld.aPlayers[0].scorecard[i] < 0) {
-                $scope.theWorld.aPlayers[0].scorecard[i] = value;
+    $scope.writeRolls = function (value) {
+        for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
+            if ($scope.theWorld.aPlayers[0].rollcard[i] < 0) {
+                $scope.theWorld.aPlayers[0].rollcard[i] = value;
                 break;
             }
         }
@@ -101,8 +73,8 @@ app.controller('bowlController', ['$scope', function ($scope) {
     $scope.userPush = function (user) {
         $scope.theWorld.aPlayers.push(user);
         $scope.reset();
-        for (var i = 0; i < $scope.theWorld.aPlayers.length; i++) {
-            $scope.theWorld.aPlayers[i].scorecard = blankArray(nRolls);
+        for (var i = 0; i < $scope.theWorld.nPlayers(); i++) {
+            $scope.theWorld.aPlayers[i].rollcard = blankArray(nRolls);
             $scope.theWorld.aPlayers[i].frames = blankArray(nFrames);
             $scope.theWorld.aPlayers[i].inputOrder = i + 1;
         }

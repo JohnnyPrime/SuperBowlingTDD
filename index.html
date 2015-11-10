@@ -43,14 +43,14 @@
 
             <tr class="rolls">
                 <tr>
-                    <th align="left" colspan="{{player.scorecard.length}}">
+                    <th align="left" colspan="{{player.rollcard.length}}">
                         {{player.name}} (with a {{player.adjective}} {{player.color}} ball)
                     </th>
                 </tr>
-                <td align="center" ng-repeat="score in player.scorecard track by $index">{{isDone(score) ? score :""}}</td>
+                <td align="center" ng-repeat="score in player.rollcard track by $index">{{displayValue(score) ? score :""}}</td>
             </tr>
             <tr class="score">
-                <td align="center" ng-repeat="frame in player.frames track by $index" colspan="{{$last ? theWorld.nRLF : theWorld.nRPF}}">{{isDone() ? frame :""}}</td>
+                <td align="center" ng-repeat="frame in player.frames track by $index" colspan="{{$last ? theWorld.nRLF : theWorld.nRPF}}">{{displayValue() ? frame :""}}</td>
             </tr>
             <tr></tr>
         </table>
@@ -58,11 +58,15 @@
 
     <div ng-hide="!hideForm" id="buttons">
         <br/>
-        <button type="submit" ng-repeat="button in theWorld.aPinInfo" ng-click="pushScore(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
+        <button type="submit" ng-repeat="button in theWorld.aButtonInfo" ng-click="writeRolls(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
+
+
 
     </div>
 
     <!--    <button type="submit"ng-click="superBowl.calculateScore()"data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
+
+    <!--    <pre>{{theWorld.aPlayers | json}}</pre>-->
 
 </body>
 
