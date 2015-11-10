@@ -18,7 +18,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
         nFrames = 10,
         nRollsPerFrame = 2,
         nRollsLastFrame = 3,
-        aButtonText = [["Noooo!", 0], ["One", 1], ["Two", 2], ["Three", 3], ["Four", 4], ["Five", 5], ["Six", 6], ["Seven", 7], ["Eight", 8], ["Nine", 9], ["Tacos", 10]],
+        aButtonText = [["Noooo!", 0], ["One", 1], ["Two", 2], ["Three", 3], ["Four", 4], ["Five", 5], ["Six", 6], ["Seven", 7], ["Eight", 8], ["Nine", 9], ["Tacos!", 10]],
 
         blankArray = function (value) {
             var aNegative = [];
@@ -77,6 +77,9 @@ app.controller('bowlController', ['$scope', function ($scope) {
                         $scope.theWorld.aPlayers[0].rollcard[i] = -2;
                         $scope.theWorld.aPlayers[0].rollcard[i + 1] = 10;
                         break;
+                    } else {
+                        $scope.theWorld.aPlayers[0].scorecard[i] = "/";
+                        $scope.theWorld.aPlayers[0].rollcard[i] = 10;
                     }
                 } else {
                     $scope.theWorld.aPlayers[0].rollcard[i] = value;
