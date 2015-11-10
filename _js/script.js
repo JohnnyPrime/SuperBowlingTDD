@@ -63,15 +63,31 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
     $scope.writeRolls = function (value) {
         for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
-            if ($scope.theWorld.aPlayers[0].rollcard[i] < 0) {
-                $scope.theWorld.aPlayers[0].rollcard[i] = value;
-                if ($scope.theWorld.aPlayers[0].rollcard[i] < 10) {
-                    $scope.theWorld.aPlayers[0].scorecard[i] = $scope.theWorld.aPlayers[0].rollcard[i];
+            if ($scope.theWorld.aPlayers[0].rollcard[i] === -1) {
+                if (value === 10) {
+                    if (i >= $scope.theWorld.aPlayers[0].rollcard.length - 3) {
+                        $scope.theWorld.aPlayers[0].scorecard[i] = "X";
+
+                        $scope.theWorld.aPlayers[0].rollcard[i] = 10;
+                        break;
+                    } else if ((i + 1) % 2) {
+
+                        $scope.theWorld.aPlayers[0].scorecard[i] = -2;
+                        $scope.theWorld.aPlayers[0].scorecard[i + 1] = "X";
+                        $scope.theWorld.aPlayers[0].rollcard[i] = -2;
+                        $scope.theWorld.aPlayers[0].rollcard[i + 1] = 10;
+                        break;
+                    }
                 } else {
-                    $scope.theWorld.aPlayers[0].scorecard[i] = "X";
+                    $scope.theWorld.aPlayers[0].rollcard[i] = value;
+                    $scope.theWorld.aPlayers[0].scorecard[i] = value;
+                    break;
                 }
                 break;
             }
+
+
+
         }
     };
 
