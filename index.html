@@ -15,8 +15,10 @@
     <form ng-hide="hideForm" validate class="css-form">
         Name:
         <input type="text" ng-model="user.name" required />
-        <br/> Ball Color:
-        <input type="text" ng-model="user.color" required value="#ffffff" />
+        <br/> Adjective:
+        <input type="text" ng-model="user.adjective" required />
+        <br/> Color:
+        <input type="text" ng-model="user.color" required />
         <br />
         <br/>
 
@@ -29,7 +31,7 @@
     </form>
     <form ng-hide="hideForm">
         <br/><b>Number of Players: {{theWorld.aPlayers.length}}</b>
-        <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.color}} ball!</pre>
+        <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective + " " + player.color}} ball!</pre>
         <!--        <pre>theWorld = {{theWorld | json}}</pre>-->
         <br/>
     </form>
