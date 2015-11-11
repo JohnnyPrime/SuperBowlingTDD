@@ -30,6 +30,7 @@ app.controller('bowlController', ['$scope', function ($scope) {
 
         createWorld = function () {
             $scope.theWorld = {
+
                 nPlayers: function () {
                     return this.aPlayers.length;
                 },
@@ -61,38 +62,56 @@ app.controller('bowlController', ['$scope', function ($scope) {
         }
     };
 
-    $scope.writeRolls = function (value) {
-        for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
-            if ($scope.theWorld.aPlayers[0].rollcard[i] === -1) {
-                if (value === 10) {
-                    if (i >= $scope.theWorld.aPlayers[0].rollcard.length - 3) {
-                        $scope.theWorld.aPlayers[0].scorecard[i] = "X";
 
-                        $scope.theWorld.aPlayers[0].rollcard[i] = 10;
-                        break;
-                    } else if ((i + 1) % 2) {
+    $scope.gameLoop = function (pins) {
+        /*      loop through player Array (find player who has frames remaining)
+        if frame not done, request/accept roll value
+              calculate frame (2 rolls or 10 pins)
+              populate players frame data*/
+        for (var i = 0; i < $scope.theWorld.nPlayers(); i++) {
+            for (var j = 0; j < nRolls; j++) {
+                if ($scope.theWorld.aPlayers[i].isTurn()) {
+                    $scope.theWorld.aPlayers[i].rollcard[j] = pins;
+                    break;
+                };
+            }
+        };
 
-                        $scope.theWorld.aPlayers[0].scorecard[i] = -2;
-                        $scope.theWorld.aPlayers[0].scorecard[i + 1] = "X";
-                        $scope.theWorld.aPlayers[0].rollcard[i] = -2;
-                        $scope.theWorld.aPlayers[0].rollcard[i + 1] = 10;
-                        break;
+
+    };
+
+    /*    $scope.writeRolls = function (value) {
+            for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
+                if ($scope.theWorld.aPlayers[0].rollcard[i] === -1) {
+                    if (value === 10) {
+                        if (i >= $scope.theWorld.aPlayers[0].rollcard.length - 3) {
+                            $scope.theWorld.aPlayers[0].scorecard[i] = "X";
+
+                            $scope.theWorld.aPlayers[0].rollcard[i] = 10;
+                            break;
+                        } else if ((i + 1) % 2) {
+
+                            $scope.theWorld.aPlayers[0].scorecard[i] = -2;
+                            $scope.theWorld.aPlayers[0].scorecard[i + 1] = "X";
+                            $scope.theWorld.aPlayers[0].rollcard[i] = -2;
+                            $scope.theWorld.aPlayers[0].rollcard[i + 1] = 10;
+                            break;
+                        } else {
+                            $scope.theWorld.aPlayers[0].scorecard[i] = "/";
+                            $scope.theWorld.aPlayers[0].rollcard[i] = 10;
+                        }
                     } else {
-                        $scope.theWorld.aPlayers[0].scorecard[i] = "/";
-                        $scope.theWorld.aPlayers[0].rollcard[i] = 10;
+                        $scope.theWorld.aPlayers[0].rollcard[i] = value;
+                        $scope.theWorld.aPlayers[0].scorecard[i] = value;
+                        break;
                     }
-                } else {
-                    $scope.theWorld.aPlayers[0].rollcard[i] = value;
-                    $scope.theWorld.aPlayers[0].scorecard[i] = value;
                     break;
                 }
-                break;
+
+
+
             }
-
-
-
-        }
-    };
+        };*/
 
     $scope.userPush = function (user) {
         $scope.theWorld.aPlayers.push(user);
@@ -102,6 +121,9 @@ app.controller('bowlController', ['$scope', function ($scope) {
             $scope.theWorld.aPlayers[i].scorecard = blankArray(nRolls);
             $scope.theWorld.aPlayers[i].frames = blankArray(nFrames);
             $scope.theWorld.aPlayers[i].inputOrder = i + 1;
+            $scope.theWorld.aPlayers[i].isTurn = function () {
+                return true;
+            };
         }
     };
 

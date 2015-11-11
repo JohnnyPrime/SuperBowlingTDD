@@ -58,7 +58,7 @@
 
     <div ng-hide="!hideForm" id="buttons">
         <br/>
-        <button type="submit" ng-repeat="button in theWorld.aButtonInfo" ng-click="writeRolls(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
+        <button type="submit" ng-repeat="button in theWorld.aButtonInfo" ng-click="gameLoop(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
 
 
 
