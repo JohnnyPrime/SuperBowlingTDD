@@ -38,21 +38,10 @@ function createWorld() {
             }
             return aTemp;
         }(),
-        userPush: function (user) {
-            this.aPlayers.push(user);
-            /* reset();*/
-            for (var i = 0; i < this.nPlayers(); i++) {
-                var player = this.aPlayers[i];
-                player.rollcard = blankArray(nRolls);
-                player.scorecard = blankArray(nRolls);
-                player.frames = blankArray(nFrames);
-                player.inputOrder = i + 1;
 
-            }
-        }
     };
     return oWorld;
-};
+}
 
 var theWorld = createWorld();
 
@@ -68,11 +57,28 @@ function displayValue(value) {
     } else {
         return false;
     }
-};
+}
 
 app.controller('GameController', ['$scope', function ($scope) {
 
     $scope.theWorld = theWorld;
+
+    this.userPush = function (user) {
+        theWorld.aPlayers.push(user);
+
+        for (var i = 0; i < theWorld.nPlayers(); i++) {
+            var player = theWorld.aPlayers[i];
+            player.rollcard = blankArray(nRolls);
+            player.scorecard = blankArray(nRolls);
+            player.frames = blankArray(nFrames);
+            player.inputOrder = i + 1;
+
+        }
+    }
+
+    this.deleteAll = function () {
+        theWorld.aPlayers = [];
+    }
 
     $scope.gameLoop = function (pins) {
         /*      loop through player Array (find player who has frames remaining)
@@ -84,11 +90,9 @@ app.controller('GameController', ['$scope', function ($scope) {
                 if ($scope.theWorld.aPlayers[i].isTurn()) {
                     $scope.theWorld.aPlayers[i].rollcard[j] = pins;
                     break;
-                };
+                }
             }
-        };
-
-
+        }
     };
 
     /*    $scope.writeRolls = function (value) {
@@ -126,14 +130,9 @@ app.controller('GameController', ['$scope', function ($scope) {
 
 
 
-    this.reset = function () {
-        this.user = {};
-    };
 
-    this.deleteAll = function () {
-        this.reset();
-        this.theWorld.aPlayers = [];
-    };
+
+
 
     $scope.canStart = function () {
         if (!$scope.theWorld.aPlayers.length) {

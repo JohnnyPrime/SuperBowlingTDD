@@ -26,11 +26,11 @@
         <br />
         <br/>
 
-        <input type="submit" ng-disabled="myForm.$invalid" ng-click="theWorld.userPush(user)" value="Add Player" />
+        <input type="submit" ng-disabled="myForm.$invalid" ng-click="game.userPush(user)" value="Add Player" />
         <br/>
 
 
-        <input type="button" width="100px" ng-click="deleteAll()" value="Delete All" />
+        <input type="button" width="100px" ng-click="game.deleteAll()" value="Delete All" />
         <input type="button" width="100px" ng-disabled="canStart()" ng-click="startGame()" value="Start Game!" />
     </form>
     <form ng-hide="hideForm">
