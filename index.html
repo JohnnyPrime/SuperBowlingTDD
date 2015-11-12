@@ -10,7 +10,10 @@
     <script src="_js/score.js"></script>
 </head>
 
-<body ng-app="bowlApp" ng-controller="bowlController as bowlCtrl">
+<body ng-app="bowlApp" ng-controller="GameController as game">
+
+
+
 
 
     <form ng-hide="hideForm" validate class="css-form">
@@ -23,7 +26,7 @@
         <br />
         <br/>
 
-        <input type="submit" ng-disabled="myForm.$invalid" ng-click="userPush(user)" value="Add Player" />
+        <input type="submit" ng-disabled="myForm.$invalid" ng-click="game.userPush(user)" value="Add Player" />
         <br/>
 
 
@@ -33,7 +36,7 @@
     <form ng-hide="hideForm">
         <br/><b>Number of Players: {{theWorld.nPlayers()}}</b>
         <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective}} {{player.color}} ball!</pre>
-        <!--        <pre>theWorld = {{theWorld | json}}</pre>-->
+        <pre>theWorld = {{game.theWorld | json}}</pre>
         <br/>
     </form>
 
@@ -64,9 +67,8 @@
 
     </div>
 
-    <!--    <button type="submit"ng-click="superBowl.calculateScore()"data-ng-disabled="superBowl.scoreTime()">Calculate Score</button>-->
-
     <pre>{{theWorld.aPlayers | json}}</pre>
+
 
 </body>
 
