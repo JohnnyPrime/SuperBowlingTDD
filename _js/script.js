@@ -37,11 +37,24 @@ function createWorld() {
 
             }
             return aTemp;
-        }()
+        }(),
+        userPush: function (user) {
+            this.aPlayers.push(user);
+            /* reset();*/
+            for (var i = 0; i < this.nPlayers(); i++) {
+                var player = this.aPlayers[i];
+                player.rollcard = blankArray(nRolls);
+                player.scorecard = blankArray(nRolls);
+                player.frames = blankArray(nFrames);
+                player.inputOrder = i + 1;
 
+            }
+        }
     };
     return oWorld;
 };
+
+var theWorld = createWorld();
 
 //borrowed shuffle code, haven't followed it's logic, seems legit
 function shuffle(o) {
@@ -59,7 +72,7 @@ function displayValue(value) {
 
 app.controller('GameController', ['$scope', function ($scope) {
 
-    this.theWorld = createWorld();
+    $scope.theWorld = theWorld;
 
     $scope.gameLoop = function (pins) {
         /*      loop through player Array (find player who has frames remaining)
@@ -111,27 +124,15 @@ app.controller('GameController', ['$scope', function ($scope) {
             }
         };*/
 
-    this.userPush = function (user) {
-        this.theWorld.aPlayers.push(user);
-        /* reset();*/
-        for (var i = 0; i < $scope.theWorld.nPlayers(); i++) {
-            this.theWorld.aPlayers[i].rollcard = blankArray(nRolls);
-            this.theWorld.aPlayers[i].scorecard = blankArray(nRolls);
-            this.theWorld.aPlayers[i].frames = blankArray(nFrames);
-            this.theWorld.aPlayers[i].inputOrder = i + 1;
-            this.theWorld.aPlayers[i].isTurn = function () {
-                return true;
-            };
-        }
+
+
+    this.reset = function () {
+        this.user = {};
     };
 
-    $scope.reset = function () {
-        $scope.user = {};
-    };
-
-    $scope.deleteAll = function () {
-        $scope.reset();
-        $scope.theWorld.aPlayers = [];
+    this.deleteAll = function () {
+        this.reset();
+        this.theWorld.aPlayers = [];
     };
 
     $scope.canStart = function () {

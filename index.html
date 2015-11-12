@@ -26,7 +26,7 @@
         <br />
         <br/>
 
-        <input type="submit" ng-disabled="myForm.$invalid" ng-click="game.userPush(user)" value="Add Player" />
+        <input type="submit" ng-disabled="myForm.$invalid" ng-click="theWorld.userPush(user)" value="Add Player" />
         <br/>
 
 
@@ -36,7 +36,7 @@
     <form ng-hide="hideForm">
         <br/><b>Number of Players: {{theWorld.nPlayers()}}</b>
         <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective}} {{player.color}} ball!</pre>
-        <pre>theWorld = {{game.theWorld | json}}</pre>
+        <pre>theWorld = {{theWorld | json}}</pre>
         <br/>
     </form>
 
@@ -67,7 +67,7 @@
 
     </div>
 
-    <pre>{{theWorld.aPlayers | json}}</pre>
+    <pre>{{theWorld | json}}</pre>
 
 
 </body>
