@@ -18,12 +18,6 @@ function blankArray(value) {
     return aNegative;
 }
 
-
-
-function createCards(players) {
-
-}
-
 function createButtons() {
     var aTemp = [];
     for (var i = 0; i < aButtonText.length; i++) {
@@ -76,6 +70,7 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     this.userPush = function (user, players) {
         players.push(angular.copy(user));
+        user = [];
     }
 
     this.startDisabled = function () {
@@ -95,8 +90,10 @@ app.controller('GameController', ['$scope', function ($scope) {
             player.inputOrder = i + 1;
         }
         shuffle(theWorld.aPlayers);
-        theWorld.isHidden = true;
+        $scope.isHidden = true;
     };
+
+    $scope.isHidden = false;
 
     $scope.gameLoop = function (pins) {
         /*      loop through player Array (find player who has frames remaining)
@@ -146,21 +143,13 @@ app.controller('GameController', ['$scope', function ($scope) {
             }
         };*/
 
-
-
-
-
-
-
-
-
     $scope.advanceTurn = function () {
 
     };
 
                 }]);
 
-app.controller('bowlController', ['$scope', function ($scope) {
+/*app.controller('bowlController', ['$scope', function ($scope) {
 
 
-            }]);
+            }]);*/
