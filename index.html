@@ -16,7 +16,7 @@
 
 
 
-    <form ng-hide="hideForm" validate class="css-form">
+    <form ng-hide="false" validate class="css-form">
         Name:
         <input type="text" ng-model="user.name" required />
         <br/> Adjective:
@@ -26,21 +26,21 @@
         <br />
         <br/>
 
-        <input type="submit" ng-disabled="myForm.$invalid" ng-click="game.userPush(user)" value="Add Player" />
+        <input type="submit" ng-disabled="myForm.$invalid" ng-click="game.userPush(user, theWorld.aPlayers)" value="Add Player" />
         <br/>
 
 
         <input type="button" width="100px" ng-click="game.deleteAll()" value="Delete All" />
-        <input type="button" width="100px" ng-disabled="canStart()" ng-click="startGame()" value="Start Game!" />
+        <input type="button" width="100px" ng-disabled="game.startDisabled()" ng-click="game.startGame()" value="Start Game!" />
     </form>
-    <form ng-hide="hideForm">
+    <form ng-hide="false">
         <br/><b>Number of Players: {{theWorld.nPlayers()}}</b>
         <pre ng-repeat="player in theWorld.aPlayers track by $index">{{player.name}} is ready with a {{player.adjective}} {{player.color}} ball!</pre>
         <pre>theWorld = {{theWorld | json}}</pre>
         <br/>
     </form>
 
-    <div ng-hide="!hideForm" id="mainContent">
+    <div ng-hide="false" id="mainContent">
         <h1>Super Bowling!</h1>
         <table ng-repeat="player in theWorld.aPlayers track by $index" class="card">
 

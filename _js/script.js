@@ -16,7 +16,25 @@ function blankArray(value) {
         aNegative.push(-1);
     }
     return aNegative;
-};
+}
+
+
+
+function createCards(players) {
+
+}
+
+function createButtons() {
+    var aTemp = [];
+    for (var i = 0; i < aButtonText.length; i++) {
+        aTemp.push({
+            nVal: aButtonText[i][1],
+            sName: aButtonText[i][0]
+        });
+
+    }
+    return aTemp;
+}
 
 function createWorld() {
     var oWorld = {
@@ -27,18 +45,7 @@ function createWorld() {
         aPlayers: [],
         nRPF: nRollsPerFrame,
         nRLF: nRollsLastFrame,
-        aButtonInfo: function () {
-            var aTemp = [];
-            for (var i = 0; i < aButtonText.length; i++) {
-                aTemp.push({
-                    nVal: aButtonText[i][1],
-                    sName: aButtonText[i][0]
-                });
-
-            }
-            return aTemp;
-        }(),
-
+        aButtonInfo: createButtons()
     };
     return oWorld;
 }
@@ -63,22 +70,33 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     $scope.theWorld = theWorld;
 
-    this.userPush = function (user) {
-        theWorld.aPlayers.push(user);
+    this.deleteAll = function () {
+        theWorld.aPlayers = [];
+    }
 
+    this.userPush = function (user, players) {
+        players.push(angular.copy(user));
+    }
+
+    this.startDisabled = function () {
+        if (theWorld.nPlayers()) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    this.startGame = function () {
         for (var i = 0; i < theWorld.nPlayers(); i++) {
             var player = theWorld.aPlayers[i];
             player.rollcard = blankArray(nRolls);
             player.scorecard = blankArray(nRolls);
             player.frames = blankArray(nFrames);
             player.inputOrder = i + 1;
-
         }
-    }
-
-    this.deleteAll = function () {
-        theWorld.aPlayers = [];
-    }
+        shuffle(theWorld.aPlayers);
+        theWorld.isHidden = true;
+    };
 
     $scope.gameLoop = function (pins) {
         /*      loop through player Array (find player who has frames remaining)
@@ -134,23 +152,7 @@ app.controller('GameController', ['$scope', function ($scope) {
 
 
 
-    $scope.canStart = function () {
-        if (!$scope.theWorld.aPlayers.length) {
-            return true;
-        } else {
-            return false;
-        }
 
-    };
-
-    $scope.startGame = function () {
-        shuffle($scope.theWorld.aPlayers);
-        for (var i = 0; i < $scope.theWorld.aPlayers.length; i++) {
-            $scope.theWorld.aPlayers[i].playOrder = i + 1;
-
-            $scope.hideForm = true;
-        }
-    };
 
     $scope.advanceTurn = function () {
 
