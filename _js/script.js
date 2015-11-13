@@ -66,12 +66,12 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     this.deleteAll = function () {
         theWorld.aPlayers = [];
-    }
+    };
 
     this.userPush = function (user, players) {
         players.push(angular.copy(user));
         user = [];
-    }
+    };
 
     this.startDisabled = function () {
         if (theWorld.nPlayers()) {
