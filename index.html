@@ -57,9 +57,9 @@
 
     <div ng-hide="!isHidden" id="buttons">
         <br/>
-        <button type="submit" ng-repeat="button in theWorld.aButtonInfo" ng-click="gameLoop(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
+        <button type="submit" ng-repeat="button in theWorld.aButtonInfo" ng-click="game.writeRolls(button.nVal)" data-ng-disabled="theWorld.isDisabled(button)">{{button.sName}}</button>
 
-        <!--        <pre>{{theWorld | json}}</pre>-->
+        <pre>{{theWorld.aPlayers | json}}</pre>
 
     </div>
 

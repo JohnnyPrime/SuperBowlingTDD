@@ -10,17 +10,17 @@ var nRolls = 21,
     nRollsLastFrame = 3,
     aButtonText = [["Noooo!", 0], ["One", 1], ["Two", 2], ["Three", 3], ["Four", 4], ["Five", 5], ["Six", 6], ["Seven", 7], ["Eight", 8], ["Nine", 9], ["Tacos!", 10]];
 
-function blankArray(value) {
+function blankArray(nLength, nFiller) {
     var aNegative = [];
-    for (var i = 0; i < value; i++) {
-        aNegative.push(-1);
+    for (var i = 0; i < nLength; i++) {
+        aNegative.push(nFiller);
     }
     return aNegative;
 }
 
-function createButtons() {
+function createButtons(aIn) {
     var aTemp = [];
-    for (var i = 0; i < aButtonText.length; i++) {
+    for (var i = 0; i < aIn.length; i++) {
         aTemp.push({
             nVal: aButtonText[i][1],
             sName: aButtonText[i][0]
@@ -39,7 +39,7 @@ function createWorld() {
         aPlayers: [],
         nRPF: nRollsPerFrame,
         nRLF: nRollsLastFrame,
-        aButtonInfo: createButtons()
+        aButtonInfo: createButtons(aButtonText)
     };
     return oWorld;
 }
@@ -64,13 +64,17 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     $scope.theWorld = theWorld;
 
+    var nFrame = 0;
+    var nTurn = 0;
+    var nRoll = 0;
+
     this.deleteAll = function () {
         theWorld.aPlayers = [];
     };
 
     this.userPush = function (user, players) {
         players.push(angular.copy(user));
-        user = [];
+        $scope.user = {};
     };
 
     this.startDisabled = function () {
@@ -81,34 +85,51 @@ app.controller('GameController', ['$scope', function ($scope) {
         }
     };
 
-    this.startGame = function () {
-        for (var i = 0; i < theWorld.nPlayers(); i++) {
-            var player = theWorld.aPlayers[i];
-            player.rollcard = blankArray(nRolls);
-            player.scorecard = blankArray(nRolls);
-            player.frames = blankArray(nFrames);
-            player.inputOrder = i + 1;
+    this.nextPlayer = function () {
+        if (nTurn >= theWorld.nPlayers()) {
+            nTurn = 0;
+            nFrame += 1;
         }
-        shuffle(theWorld.aPlayers);
-        $scope.isHidden = true;
-    };
+        if (theWorld.aPlayers[nTurn].frames[nFrame] === -1) {
+            alert(theWorld.aPlayers[nTurn].name + " you are up!");
 
-    $scope.isHidden = false;
-
-    $scope.gameLoop = function (pins) {
+        } else {
+            nTurn += 1;
+            this.nextPlayer();
+        }
         /*      loop through player Array (find player who has frames remaining)
         if frame not done, request/accept roll value
               calculate frame (2 rolls or 10 pins)
               populate players frame data*/
-        for (var i = 0; i < $scope.theWorld.nPlayers(); i++) {
-            for (var j = 0; j < nRolls; j++) {
-                if ($scope.theWorld.aPlayers[i].isTurn()) {
-                    $scope.theWorld.aPlayers[i].rollcard[j] = pins;
-                    break;
-                }
-            }
-        }
+        /*        for (var i = 0; i < theWorld.nPlayers(); i++) {
+
+
+                }*/
     };
+
+    this.startGame = function () {
+        for (var i = 0; i < theWorld.nPlayers(); i++) {
+            var player = theWorld.aPlayers[i];
+            player.rollcard = blankArray(nRolls, -1);
+            player.scorecard = blankArray(nRolls, -1);
+            player.frames = blankArray(nFrames, -1);
+            player.inputOrder = i + 1;
+        }
+        shuffle(theWorld.aPlayers);
+        $scope.isHidden = true;
+        this.nextPlayer();
+    };
+
+    $scope.isHidden = false;
+
+
+
+    this.writeRolls = function (value) {
+        theWorld.aPlayers[nTurn].frames[nFrame] = "score";
+
+        this.nextPlayer();
+    };
+
 
     /*    $scope.writeRolls = function (value) {
             for (var i = 0; i < $scope.theWorld.aPlayers[0].rollcard.length; i++) {
@@ -147,7 +168,7 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     };
 
-                }]);
+            }]);
 
 /*app.controller('bowlController', ['$scope', function ($scope) {
 
