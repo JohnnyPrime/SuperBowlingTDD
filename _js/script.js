@@ -91,7 +91,7 @@ app.controller('GameController', ['$scope', function ($scope) {
             nFrame += 1;
         }
         if (theWorld.aPlayers[nTurn].frames[nFrame] === -1) {
-            alert(theWorld.aPlayers[nTurn].name + " you are up!");
+            /*            alert(theWorld.aPlayers[nTurn].name + " you are up!");*/
 
         } else {
             nTurn += 1;
@@ -114,6 +114,7 @@ app.controller('GameController', ['$scope', function ($scope) {
             player.scorecard = blankArray(nRolls, -1);
             player.frames = blankArray(nFrames, -1);
             player.inputOrder = i + 1;
+            player.nRollNumber = 0;
         }
         shuffle(theWorld.aPlayers);
         $scope.isHidden = true;
@@ -124,10 +125,52 @@ app.controller('GameController', ['$scope', function ($scope) {
 
 
 
-    this.writeRolls = function (value) {
-        theWorld.aPlayers[nTurn].frames[nFrame] = "score";
+    this.writeRolls = function (pins) {
 
-        this.nextPlayer();
+        if (theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] === -1 && nRoll < 2) {
+
+
+            /*            theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = pins;*/
+
+            if (pins === 10) {
+                if (theWorld.aPlayers[nTurn].rollcard.length - 3) {
+                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = "X";
+
+                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = 10;
+                } else if ((theWorld.aPlayers[nTurn].nRollNumber + 1) % 2) {
+
+                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = -2;
+                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber + 1] = "X";
+                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = -2;
+                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber + 1] = 10;
+
+                } else {
+                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = "/";
+                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = 10;
+                }
+            } else {
+                theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = pins;
+                theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = pins;
+
+            }
+
+            nRoll += 1;
+            theWorld.aPlayers[nTurn].nRollNumber += 1;
+
+
+
+
+
+
+
+
+            /*            alert(theWorld.aPlayers[nTurn].name + " you are up!");*/
+        } else {
+            nRoll = 0;
+            theWorld.aPlayers[nTurn].frames[nFrame] = "score";
+            this.nextPlayer();
+            this.writeRolls(pins);
+        }
     };
 
 
