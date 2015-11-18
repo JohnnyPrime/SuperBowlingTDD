@@ -52,15 +52,17 @@ function shuffle(o) {
     return o;
 }
 
-function displayValue(value) {
-    if (value > -1 || value === "X" || value === "/") {
-        return true;
-    } else {
-        return false;
-    }
-}
+
 
 app.controller('GameController', ['$scope', function ($scope) {
+
+    this.displayValue = function (value) {
+        if (value > -1 || value === "X" || value === "/") {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     $scope.theWorld = theWorld;
 
