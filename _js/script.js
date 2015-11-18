@@ -129,47 +129,42 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     this.writeRolls = function (pins) {
 
-        if (theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] === -1 && nRoll < 2) {
+        var currentRoll = theWorld.aPlayers[nTurn].nRollNumber;
+        var currentPlayer = theWorld.aPlayers[nTurn];
+
+        if (currentPlayer.rollcard[currentRoll] === -1 && nRoll < 2) {
 
 
             /*            theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = pins;*/
 
             if (pins === 10) {
-                if (theWorld.aPlayers[nTurn].rollcard.length - 3) {
-                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = "X";
-
-                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = 10;
-                } else if ((theWorld.aPlayers[nTurn].nRollNumber + 1) % 2) {
-
-                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = -2;
-                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber + 1] = "X";
-                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = -2;
-                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber + 1] = 10;
-
+                if (currentRoll > 17) {
+                    currentPlayer.scorecard[currentRoll] = "X";
+                    currentPlayer.rollcard[currentRoll] = 10;
+                } else if ((currentPlayer.nRollNumber + 1) % 2) {
+                    currentPlayer.scorecard[currentRoll] = -2;
+                    currentPlayer.scorecard[currentRoll + 1] = "X";
+                    currentPlayer.rollcard[currentRoll] = -2;
+                    currentPlayer.rollcard[currentRoll + 1] = 10;
+                    nRoll += 1;
+                    theWorld.aPlayers[nTurn].nRollNumber += 1;
                 } else {
-                    theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = "/";
-                    theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = 10;
+                    currentPlayer.scorecard[currentRoll] = "/";
+                    currentPlayer.rollcard[currentRoll] = 10;
                 }
             } else {
-                theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = pins;
-                theWorld.aPlayers[nTurn].scorecard[theWorld.aPlayers[nTurn].nRollNumber] = pins;
+                currentPlayer.rollcard[currentRoll] = pins;
+                currentPlayer.scorecard[currentRoll] = pins;
 
             }
 
             nRoll += 1;
             theWorld.aPlayers[nTurn].nRollNumber += 1;
 
-
-
-
-
-
-
-
             /*            alert(theWorld.aPlayers[nTurn].name + " you are up!");*/
         } else {
             nRoll = 0;
-            theWorld.aPlayers[nTurn].frames[nFrame] = "score";
+            currentPlayer.frames[nFrame] = "score";
             this.nextPlayer();
             this.writeRolls(pins);
         }
@@ -213,7 +208,7 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     };
 
-            }]);
+}]);
 
 /*app.controller('bowlController', ['$scope', function ($scope) {
 
