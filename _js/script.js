@@ -132,16 +132,9 @@ app.controller('GameController', ['$scope', function ($scope) {
         var currentRoll = theWorld.aPlayers[nTurn].nRollNumber;
         var currentPlayer = theWorld.aPlayers[nTurn];
 
-        if (currentPlayer.rollcard[currentRoll] === -1 && nRoll < 2) {
-
-
-            /*            theWorld.aPlayers[nTurn].rollcard[theWorld.aPlayers[nTurn].nRollNumber] = pins;*/
-
+        if (nRoll < 2 && nFrame < 9) {
             if (pins === 10) {
-                if (currentRoll > 17) {
-                    currentPlayer.scorecard[currentRoll] = "X";
-                    currentPlayer.rollcard[currentRoll] = 10;
-                } else if ((currentPlayer.nRollNumber + 1) % 2) {
+                if ((currentPlayer.nRollNumber + 1) % 2) {
                     currentPlayer.scorecard[currentRoll] = -2;
                     currentPlayer.scorecard[currentRoll + 1] = "X";
                     currentPlayer.rollcard[currentRoll] = -2;
@@ -160,11 +153,15 @@ app.controller('GameController', ['$scope', function ($scope) {
 
             nRoll += 1;
             theWorld.aPlayers[nTurn].nRollNumber += 1;
+        } else if (nFrame === 9 && currentRoll < 21) {
+            currentPlayer.rollcard[currentRoll] = pins;
+            currentPlayer.scorecard[currentRoll] = pins;
+            nRoll += 1;
+            theWorld.aPlayers[nTurn].nRollNumber += 1;
 
-            /*            alert(theWorld.aPlayers[nTurn].name + " you are up!");*/
         } else {
             nRoll = 0;
-            currentPlayer.frames[nFrame] = "score";
+            theWorld.aPlayers[nTurn].frames[nFrame] = "score";
             this.nextPlayer();
             this.writeRolls(pins);
         }
