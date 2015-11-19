@@ -49,7 +49,7 @@
                 <td align="center" ng-repeat="score in player.scorecard track by $index">{{game.displayValue(score) ? score :""}}</td>
             </tr>
             <tr class="score">
-                <td align="center" ng-repeat="frame in player.frames track by $index" colspan="{{$last ? theWorld.nRLF : theWorld.nRPF}}">{{displayValue() ? frame :""}}</td>
+                <td align="center" ng-repeat="score in player.frameScore track by $index" colspan="{{$last ? theWorld.nRLF : theWorld.nRPF}}">{{game.displayValue(score) ? score :""}}</td>
             </tr>
             <tr></tr>
         </table>
