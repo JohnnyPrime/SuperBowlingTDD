@@ -153,12 +153,48 @@ app.controller('GameController', ['$scope', function ($scope) {
 
             nRoll += 1;
             theWorld.aPlayers[nTurn].nRollNumber += 1;
-        } else if (nFrame === 9 && currentRoll < 21) {
-            currentPlayer.rollcard[currentRoll] = pins;
-            currentPlayer.scorecard[currentRoll] = pins;
+        } else if (nRoll < 2 && nFrame === 9) {
+
+            if (currentRoll === 18) {
+                if (pins === 10) {
+                    currentPlayer.scorecard[currentRoll] = "X";
+                    currentPlayer.rollcard[currentRoll] = 10;
+                    nRoll -= 1;
+                } else {
+                    currentPlayer.rollcard[currentRoll] = pins;
+                    currentPlayer.scorecard[currentRoll] = pins;
+                }
+
+            } else if (currentRoll === 19) {
+                if (pins === 10 && currentPlayer.rollcard[currentRoll - 1] === 10) {
+                    currentPlayer.scorecard[currentRoll] = "X";
+                    currentPlayer.rollcard[currentRoll] = 10;
+                    nRoll -= 1;
+                } else if (pins === 10) {
+                    currentPlayer.scorecard[currentRoll] = "/";
+                    currentPlayer.rollcard[currentRoll] = 10;
+                    nRoll -= 1;
+                } else {
+                    currentPlayer.rollcard[currentRoll] = pins;
+                    currentPlayer.scorecard[currentRoll] = pins;
+                }
+            } else if (currentRoll === 20) {
+                if (pins === 10 && currentPlayer.rollcard[currentRoll - 1] === 10) {
+                    currentPlayer.scorecard[currentRoll] = "X";
+                    currentPlayer.rollcard[currentRoll] = 10;
+
+                } else if (pins === 10) {
+                    currentPlayer.scorecard[currentRoll] = "/";
+                    currentPlayer.rollcard[currentRoll] = 10;
+
+                } else {
+                    currentPlayer.rollcard[currentRoll] = pins;
+                    currentPlayer.scorecard[currentRoll] = pins;
+                }
+            }
+
             nRoll += 1;
             theWorld.aPlayers[nTurn].nRollNumber += 1;
-
         } else {
             nRoll = 0;
             theWorld.aPlayers[nTurn].frames[nFrame] = "score";
