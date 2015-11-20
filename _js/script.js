@@ -56,15 +56,59 @@ function shuffle(o) {
 
 app.controller('GameController', ['$scope', function ($scope) {
 
+    this.labelFrame = function (player, j) {
+        if (j === 9) {
+            return "10th Frame";
+        } else if (player.scorecard[(j * 2)] === -1 && player.scorecard[(j * 2) + 1] === -1) {
+            return "empty";
+        } else if (player.scorecard[(j * 2) + 1] === "/") {
+            return "spare";
+        } else if (player.scorecard[(j * 2) + 1] === "X") {
+            return "strike";
+        } else if (player.scorecard[(j * 2)] >= 0 && player.scorecard[(j * 2 + 1)] >= 0) {
+            return "normal";
+        }
+    };
+
+    this.scoreFrame = function (player, j) {
+        if (player.frameLabel[j] === "strike" && player.frameLabel[j + 1] === "strike" && player.frameLabel[j + 2] === "strike") {
+            return 30;
+        } else if (player.frameLabel[j] === "strike" && player.frameLabel[j + 1] === "strike" && player.frameLabel[j + 2] === "spare") {
+            return (20 + player.scorecard[(j * 2 + 4)]);
+        } else if (player.frameLabel[j] === "strike" && player.frameLabel[j + 1] === "strike" && player.frameLabel[j + 2] !== "empty") {
+            return (20 + player.scorecard[(j * 2 + 4)]);
+        } else if (player.frameLabel[j] === "strike" && player.frameLabel[j + 1] === "spare") {
+            return 20;
+        } else if (player.frameLabel[j] === "strike" && player.frameLabel[j + 1] === "normal") {
+            return 10 + player.scorecard[(j * 2 + 2)] + player.scorecard[(j * 2 + 2)];
+        } else if (player.frameLabel[j] === "spare" && player.frameLabel[j + 1] === "strike") {
+            return 20;
+        } else if (player.frameLabel[j] === "spare" && player.frameLabel[j + 1] !== "empty") {
+            return 10 + player.scorecard[(j * 2 + 2)];
+        } else if (player.frameLabel[j] === "normal") {
+            return player.rollcard[(j * 2)] + player.scorecard[(j * 2 + 1)];
+        }
+    };
+
+
+
     this.updateFrameScore = function () {
 
         for (var i = 0; i < theWorld.nPlayers(); i++) {
-            var player = theWorld.aPlayers[i];
-            for (var j = 0; j < player.frameScore.length; j++) {
-                player.frameScore[j] = player.rollcard[i + j * 2];
+            for (var j = 0; j < theWorld.aPlayers[i].frameScore.length; j++) {
+                theWorld.aPlayers[i].frameLabel[j] = this.labelFrame(theWorld.aPlayers[i], j);
+                /*                theWorld.aPlayers[i].frameScore[j] = this.scoreFrame(theWorld.aPlayers[i], j);*/
+            }
+        }
+
+        for (var i = 0; i < theWorld.nPlayers(); i++) {
+            for (var j = 0; j < theWorld.aPlayers[i].frameScore.length; j++) {
+                /*                theWorld.aPlayers[i].frameLabel[j] = this.labelFrame(theWorld.aPlayers[i], j);*/
+                theWorld.aPlayers[i].frameScore[j] = this.scoreFrame(theWorld.aPlayers[i], j);
             }
         }
     };
+
 
     this.displayValue = function (value) {
         if (value > -1 || value === "X" || value === "/") {
@@ -128,6 +172,7 @@ app.controller('GameController', ['$scope', function ($scope) {
             player.scorecard = blankArray(nRolls, -1);
             player.frames = blankArray(nFrames, -1);
             player.frameScore = blankArray(nFrames, -1);
+            player.frameLabel = blankArray(nFrames, -1);
             player.inputOrder = i + 1;
             player.nRollNumber = 0;
 
@@ -146,7 +191,7 @@ app.controller('GameController', ['$scope', function ($scope) {
         var currentRoll = theWorld.aPlayers[nTurn].nRollNumber;
         var currentPlayer = theWorld.aPlayers[nTurn];
 
-        this.updateFrameScore();
+
 
         if ($scope.nRoll < 2 && nFrame < 9) {
             if (pins === 10) {
@@ -224,6 +269,7 @@ app.controller('GameController', ['$scope', function ($scope) {
             this.writeRolls(pins);
 
         }
+        this.updateFrameScore();
     };
 
 
@@ -265,9 +311,56 @@ app.controller('GameController', ['$scope', function ($scope) {
 
     };
 
-}]);
+            }]);
 
 /*app.controller('bowlController', ['$scope', function ($scope) {
 
 
             }]);*/
+
+/*    this.scoreGo = function (player, j) {
+        if (this.spareReady(player, j) && player.scorecard[(j * 2) + 1] === "/") {
+            if (player.scorecard[(j * 2) + 2] === -2) {
+                return 20;
+            } else {
+                return player.rollcard[(j * 2) + 2] + 10;
+            }
+        } else if (this.strikeReady(player, j) && player.scorecard[(j * 2) + 1] === "X") {
+            if (player.scorecard[(j * 2) + 2] === -2) {
+                return 20 + player.rollcard[(j * 2) + 3];
+            } else {
+                return player.rollcard[(j * 2) + 2] + player.rollcard[(j * 2) + 3] + 10;
+            }
+        } else if (this.normalReady(player, j)) {
+            return player.rollcard[(j * 2)] + player.rollcard[(j * 2 + 1)];
+        }
+    };
+
+
+
+    this.spareReady = function (player, j) {
+        if (player.scorecard[(j * 2) + 2] !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    };
+
+    this.strikeReady = function (player, j) {
+        if (player.scorecard[(j * 2) + 2] !== -1 && player.scorecard[(j * 2) + 3] !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    };
+
+    this.normalReady = function (player, j) {
+        if (player.scorecard[(j * 2) + 1] !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    };*/
