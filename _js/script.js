@@ -206,7 +206,7 @@ app.controller('GameController', ['$scope', function ($scope) {
                     currentPlayer.scorecard[currentRoll] = "/";
                     currentPlayer.rollcard[currentRoll] = 10 - currentPlayer.rollcard[currentRoll - 1];
                 }
-            } else if (((currentPlayer.nRollNumber) % 2) && currentPlayer.rollcard[currentRoll - 1] + pins > 10) {
+            } else if (((currentPlayer.nRollNumber) % 2) && currentPlayer.rollcard[currentRoll - 1] + pins >= 10) {
                 currentPlayer.scorecard[currentRoll] = "/";
                 currentPlayer.rollcard[currentRoll] = 10 - currentPlayer.rollcard[currentRoll - 1];
             } else {
